@@ -1,281 +1,318 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
   ScrollView, 
-  ImageBackground, 
-  Image,
   TouchableOpacity,
-  Dimensions 
+  Dimensions,
+  SafeAreaView 
 } from 'react-native';
-import ReadingListCard from '../components/ReadingListCard';
-import BookRating from '../components/BookRating';
-import TwoSideRoundedButton from '../components/TwoSideRoundedButton';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+import BookCard from '../components/BookCard';
+import CategoryCard from '../components/CategoryCard';
+import SearchBar from '../components/SearchBar';
 import { colors } from '../constants/colors';
+import { featuredBooks, categories, recentBooks, trendingBooks } from '../data/booksData';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }) => {
-  const bookData = [
-    {
-      id: 1,
-      image: { uri: 'https://images.pexels.com/photos/1029141/pexels-photo-1029141.jpeg' },
-      title: 'Crushing & Influence',
-      author: 'Gary Venchuk',
-      rating: 4.9,
-    },
-    {
-      id: 2,
-      image: { uri: 'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg' },
-      title: 'Top Ten Business Hacks',
-      author: 'Herman Joel',
-      rating: 4.8,
-    },
-  ];
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleBookPress = (book) => {
+    navigation.navigate('BookDetails', { book });
+  };
+
+  const handleCategoryPress = (category) => {
+    navigation.navigate('Category', { category });
+  };
+
+  const toggleFavorite = (bookId) => {
+    // Handle favorite toggle logic here
+    console.log('Toggle favorite for book:', bookId);
+  };
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <ImageBackground 
-        source={{ uri: 'https://images.pexels.com/photos/1029141/pexels-photo-1029141.jpeg' }}
-        style={styles.headerBackground}
-      >
-        <View style={styles.headerContent}>
-          <View style={styles.titleSection}>
-            <Text style={styles.headerTitle}>
-              <Text>What are you {'\n'}reading </Text>
-              <Text style={styles.headerTitleBold}>today?</Text>
-            </Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <LinearGradient
+          colors={[colors.gradientStart, colors.gradientEnd]}
+          style={styles.header}
+        >
+          <View style={styles.headerContent}>
+            <View style={styles.headerTop}>
+              <View>
+                <Text style={styles.greeting}>Good Morning</Text>
+                <Text style={styles.userName}>Sarah</Text>
+              </View>
+              <TouchableOpacity style={styles.notificationButton}>
+                <Ionicons name="notifications-outline" size={24} color={colors.white} />
+                <View style={styles.notificationBadge} />
+              </TouchableOpacity>
+            </View>
+            
+            <SearchBar
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              onFilterPress={() => navigation.navigate('Search')}
+            />
           </View>
-          
+        </LinearGradient>
+
+        {/* Categories */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Categories</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAll}>See All</Text>
+            </TouchableOpacity>
+          </View>
           <ScrollView 
             horizontal 
             showsHorizontalScrollIndicator={false}
-            style={styles.booksScrollView}
+            contentContainerStyle={styles.categoriesContainer}
           >
-            {bookData.map((book) => (
-              <ReadingListCard
-                key={book.id}
-                image={book.image}
-                title={book.title}
-                author={book.author}
-                rating={book.rating}
-                onPressDetails={() => navigation.navigate('Details')}
-                onPressRead={() => {}}
+            {categories.map((category) => (
+              <CategoryCard
+                key={category.id}
+                category={category}
+                onPress={() => handleCategoryPress(category)}
               />
             ))}
-            <View style={{ width: 30 }} />
           </ScrollView>
         </View>
-      </ImageBackground>
 
-      <View style={styles.mainContent}>
-        <Text style={styles.sectionTitle}>
-          <Text>Best of the </Text>
-          <Text style={styles.sectionTitleBold}>day</Text>
-        </Text>
-        
-        {/* Best of the day card */}
-        <View style={styles.bestOfDayCard}>
-          <View style={styles.bestOfDayContent}>
-            <Text style={styles.bestOfDaySubtitle}>
-              New York Time Best For 11th March 2020
-            </Text>
-            <Text style={styles.bestOfDayTitle}>
-              How To Win {'\n'}Friends & Influence
-            </Text>
-            <Text style={styles.bestOfDayAuthor}>Gary Venchuk</Text>
-            <View style={styles.bestOfDayBottom}>
-              <BookRating score={4.9} />
-              <Text style={styles.bestOfDayDescription}>
-                When the earth was flat and everyone wanted to win the game of the best and people….
-              </Text>
-            </View>
+        {/* Featured Books */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Featured Books</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAll}>See All</Text>
+            </TouchableOpacity>
           </View>
-          <Image 
-            source={{ uri: 'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg' }}
-            style={styles.bestOfDayImage}
-            resizeMode="cover"
-          />
-          <View style={styles.bestOfDayButton}>
-            <TwoSideRoundedButton text="Read" onPress={() => {}} />
-          </View>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.booksContainer}
+          >
+            {featuredBooks.map((book) => (
+              <BookCard
+                key={book.id}
+                book={book}
+                onPress={() => handleBookPress(book)}
+                onFavoritePress={toggleFavorite}
+                showProgress={true}
+                style={styles.bookCard}
+              />
+            ))}
+          </ScrollView>
         </View>
 
-        <Text style={styles.sectionTitle}>
-          <Text>Continue </Text>
-          <Text style={styles.sectionTitleBold}>reading...</Text>
-        </Text>
-
-        {/* Continue reading card */}
-        <View style={styles.continueReadingCard}>
-          <View style={styles.continueReadingContent}>
-            <View style={styles.continueReadingText}>
-              <Text style={styles.continueReadingTitle}>Crushing & Influence</Text>
-              <Text style={styles.continueReadingAuthor}>Gary Venchuk</Text>
-              <Text style={styles.continueReadingChapter}>Chapter 7 of 10</Text>
-            </View>
-            <Image 
-              source={{ uri: 'https://images.pexels.com/photos/1029141/pexels-photo-1029141.jpeg' }}
-              style={styles.continueReadingImage}
-              resizeMode="contain"
-            />
-          </View>
-          <View style={styles.progressBar} />
+        {/* Continue Reading */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Continue Reading</Text>
+          {recentBooks.map((book) => (
+            <TouchableOpacity 
+              key={book.id}
+              style={styles.continueReadingCard}
+              onPress={() => handleBookPress(book)}
+            >
+              <View style={styles.continueReadingContent}>
+                <View style={styles.continueReadingText}>
+                  <Text style={styles.continueReadingTitle}>{book.title}</Text>
+                  <Text style={styles.continueReadingAuthor}>{book.author}</Text>
+                  <Text style={styles.lastRead}>Last read: {book.lastRead}</Text>
+                </View>
+                <View style={styles.continueReadingRight}>
+                  <BookCard
+                    book={book}
+                    onPress={() => handleBookPress(book)}
+                    style={styles.miniBookCard}
+                  />
+                </View>
+              </View>
+              <View style={styles.progressContainer}>
+                <View style={styles.progressBar}>
+                  <View style={[styles.progressFill, { width: `${book.progress * 100}%` }]} />
+                </View>
+                <Text style={styles.progressText}>{Math.round(book.progress * 100)}% complete</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
         </View>
-      </View>
-    </ScrollView>
+
+        {/* Trending Now */}
+        <View style={[styles.section, styles.lastSection]}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Trending Now</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAll}>See All</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.booksContainer}
+          >
+            {trendingBooks.map((book) => (
+              <BookCard
+                key={book.id}
+                book={book}
+                onPress={() => handleBookPress(book)}
+                onFavoritePress={toggleFavorite}
+                style={styles.bookCard}
+              />
+            ))}
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.background,
   },
-  headerBackground: {
-    width: '100%',
-    paddingTop: height * 0.1,
+  header: {
+    paddingTop: 20,
+    paddingBottom: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
   headerContent: {
-    paddingBottom: 40,
+    paddingHorizontal: 20,
   },
-  titleSection: {
-    paddingHorizontal: 24,
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 30,
   },
-  headerTitle: {
-    fontSize: 28,
+  greeting: {
+    fontSize: 16,
     color: colors.white,
-    lineHeight: 36,
+    opacity: 0.8,
   },
-  headerTitleBold: {
+  userName: {
+    fontSize: 24,
     fontWeight: 'bold',
+    color: colors.white,
   },
-  booksScrollView: {
-    marginBottom: 20,
+  notificationButton: {
+    position: 'relative',
+    padding: 8,
   },
-  mainContent: {
-    paddingHorizontal: 24,
-    paddingTop: 20,
+  notificationBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.error,
+  },
+  section: {
+    paddingHorizontal: 20,
+    marginTop: 30,
+  },
+  lastSection: {
+    paddingBottom: 100,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 24,
-    color: colors.kBlackColor,
-    marginVertical: 20,
-  },
-  sectionTitleBold: {
+    fontSize: 20,
     fontWeight: 'bold',
+    color: colors.textPrimary,
   },
-  bestOfDayCard: {
-    width: '100%',
-    height: 245,
-    marginBottom: 20,
-    position: 'relative',
+  seeAll: {
+    fontSize: 14,
+    color: colors.primary,
+    fontWeight: '600',
   },
-  bestOfDayContent: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: width * 0.35,
-    height: 230,
-    backgroundColor: `${colors.lightGray}73`,
-    borderRadius: 29,
-    padding: 24,
-    paddingRight: 0,
+  categoriesContainer: {
+    paddingRight: 20,
   },
-  bestOfDaySubtitle: {
-    fontSize: 9,
-    color: colors.kLightBlackColor,
-    marginBottom: 10,
+  booksContainer: {
+    paddingRight: 20,
   },
-  bestOfDayTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: colors.kBlackColor,
-    marginBottom: 5,
-  },
-  bestOfDayAuthor: {
-    color: colors.kLightBlackColor,
-    marginBottom: 10,
-  },
-  bestOfDayBottom: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  bestOfDayDescription: {
-    fontSize: 10,
-    color: colors.kLightBlackColor,
-    flex: 1,
-    marginLeft: 10,
-    lineHeight: 14,
-  },
-  bestOfDayImage: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    width: width * 0.37,
-    height: 200,
-    borderRadius: 15,
-  },
-  bestOfDayButton: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    height: 40,
-    width: width * 0.3,
+  bookCard: {
+    marginRight: 16,
   },
   continueReadingCard: {
-    height: 80,
-    backgroundColor: colors.white,
-    borderRadius: 38.5,
-    shadowColor: colors.kShadowColor,
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
+    backgroundColor: colors.cardBackground,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: colors.cardShadow,
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 1,
-    shadowRadius: 33,
-    elevation: 8,
-    overflow: 'hidden',
-    marginBottom: 40,
+    shadowRadius: 12,
+    elevation: 5,
   },
   continueReadingContent: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    marginBottom: 12,
   },
   continueReadingText: {
     flex: 1,
-    justifyContent: 'center',
   },
   continueReadingTitle: {
+    fontSize: 16,
     fontWeight: 'bold',
-    color: colors.kBlackColor,
-    fontSize: 14,
+    color: colors.textPrimary,
+    marginBottom: 4,
   },
   continueReadingAuthor: {
-    color: colors.kLightBlackColor,
+    fontSize: 14,
+    color: colors.textSecondary,
+    marginBottom: 4,
+  },
+  lastRead: {
     fontSize: 12,
-    marginTop: 2,
+    color: colors.textLight,
   },
-  continueReadingChapter: {
-    fontSize: 10,
-    color: colors.kLightBlackColor,
-    textAlign: 'right',
-    marginTop: 5,
+  continueReadingRight: {
+    width: 60,
+    height: 80,
   },
-  continueReadingImage: {
-    width: 55,
-    height: 60,
+  miniBookCard: {
+    width: 60,
+    height: 80,
+    padding: 0,
+    margin: 0,
+  },
+  progressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   progressBar: {
-    height: 7,
-    width: width * 0.65,
-    backgroundColor: colors.kProgressIndicator,
-    borderRadius: 7,
+    flex: 1,
+    height: 6,
+    backgroundColor: colors.lightGray,
+    borderRadius: 3,
+    marginRight: 12,
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: colors.primary,
+    borderRadius: 3,
+  },
+  progressText: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    fontWeight: '600',
   },
 });
 
-export default HomeScreen;
+export default WelcomeScreen;

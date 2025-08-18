@@ -1,0 +1,125 @@
+export const categories = [
+  { id: 1, name: 'Fiction', icon: 'book', color: '#6C5CE7', count: 245 },
+  { id: 2, name: 'Science', icon: 'flask', color: '#00B894', count: 128 },
+  { id: 3, name: 'History', icon: 'time', color: '#FDCB6E', count: 89 },
+  { id: 4, name: 'Biography', icon: 'person', color: '#FD79A8', count: 156 },
+  { id: 5, name: 'Technology', icon: 'laptop', color: '#74B9FF', count: 203 },
+  { id: 6, name: 'Philosophy', icon: 'bulb', color: '#E17055', count: 67 },
+];
+
+export const featuredBooks = [
+  {
+    id: 1,
+    title: 'The Midnight Library',
+    author: 'Matt Haig',
+    rating: 4.8,
+    image: 'https://images.pexels.com/photos/1029141/pexels-photo-1029141.jpeg',
+    category: 'Fiction',
+    description: 'Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived.',
+    pages: 288,
+    publishYear: 2020,
+    isbn: '9781786892737',
+    language: 'English',
+    chapters: [
+      { number: 1, title: 'The Library', pages: 12 },
+      { number: 2, title: 'The Midnight Hour', pages: 18 },
+      { number: 3, title: 'Between Life and Death', pages: 15 },
+      { number: 4, title: 'The Book of Regrets', pages: 22 },
+    ],
+    progress: 0.65,
+    isFavorite: true,
+    isDownloaded: true,
+  },
+  {
+    id: 2,
+    title: 'Atomic Habits',
+    author: 'James Clear',
+    rating: 4.9,
+    image: 'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg',
+    category: 'Self-Help',
+    description: 'An Easy & Proven Way to Build Good Habits & Break Bad Ones. Tiny changes, remarkable results.',
+    pages: 320,
+    publishYear: 2018,
+    isbn: '9780735211292',
+    language: 'English',
+    chapters: [
+      { number: 1, title: 'The Surprising Power of Atomic Habits', pages: 20 },
+      { number: 2, title: 'How Your Habits Shape Your Identity', pages: 18 },
+      { number: 3, title: 'How to Build Better Habits in 4 Simple Steps', pages: 25 },
+    ],
+    progress: 0.32,
+    isFavorite: false,
+    isDownloaded: false,
+  },
+  {
+    id: 3,
+    title: 'Dune',
+    author: 'Frank Herbert',
+    rating: 4.7,
+    image: 'https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg',
+    category: 'Science Fiction',
+    description: 'Set on the desert planet Arrakis, Dune is the story of the boy Paul Atreides, heir to a noble family tasked with ruling an inhospitable world.',
+    pages: 688,
+    publishYear: 1965,
+    isbn: '9780441172719',
+    language: 'English',
+    chapters: [
+      { number: 1, title: 'Caladan', pages: 45 },
+      { number: 2, title: 'Arrakis', pages: 52 },
+      { number: 3, title: 'The Desert', pages: 38 },
+    ],
+    progress: 0.0,
+    isFavorite: true,
+    isDownloaded: true,
+  },
+];
+
+export const recentBooks = [
+  {
+    id: 4,
+    title: 'The Psychology of Money',
+    author: 'Morgan Housel',
+    rating: 4.6,
+    image: 'https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg',
+    progress: 0.78,
+    lastRead: '2 hours ago',
+  },
+  {
+    id: 5,
+    title: 'Sapiens',
+    author: 'Yuval Noah Harari',
+    rating: 4.8,
+    image: 'https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg',
+    progress: 0.45,
+    lastRead: '1 day ago',
+  },
+];
+
+export const trendingBooks = [
+  {
+    id: 6,
+    title: 'Project Hail Mary',
+    author: 'Andy Weir',
+    rating: 4.9,
+    image: 'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg',
+    category: 'Science Fiction',
+  },
+  {
+    id: 7,
+    title: 'The Seven Husbands of Evelyn Hugo',
+    author: 'Taylor Jenkins Reid',
+    rating: 4.7,
+    image: 'https://images.pexels.com/photos/1029141/pexels-photo-1029141.jpeg',
+    category: 'Fiction',
+  },
+];
+
+export const userStats = {
+  booksRead: 47,
+  readingStreak: 12,
+  totalPages: 15420,
+  averageRating: 4.3,
+  favoriteGenre: 'Science Fiction',
+  readingGoal: 50,
+  currentProgress: 47,
+};
