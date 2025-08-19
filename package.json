@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "eBook App",
+    "slug": "ebook-reading-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/adaptive-icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.ebookapp"
+    },
+    "android": {
+      "package": "com.example.ebookapp",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
